@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="TaskTracker.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:TaskTracker"
+    xmlns:views="clr-namespace:TaskTracker.Views"
+    Shell.FlyoutBehavior="Disabled"
+    Title="TaskTracker">
+
+    <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:TaskListView}"
+        Route="MainPage" />
+
+    <ShellContent 
+               ContentTemplate="{DataTemplate views:AddTaskListView}" 
+               Route="AddTaskListView" />
+
+    <ShellContent 
+               ContentTemplate="{DataTemplate views:SingleTaskView}" 
+               Route="SingleTaskView" />
+
+    <ShellContent 
+               ContentTemplate="{DataTemplate views:ReportView}" 
+               Route="SingleTaskView" />
+
+</Shell>

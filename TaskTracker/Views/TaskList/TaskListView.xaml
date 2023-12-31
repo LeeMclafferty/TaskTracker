@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolKit.Maui"
+             xmlns:vm="clr-namespace:TaskTracker.ViewModels"
+             x:DataType="vm:TaskListViewModel"
+             xmlns:entities="clr-namespace:BusinessEntities;assembly=BusinessEntities"
+             x:Class="TaskTracker.TaskListView">
+
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#de5653"
+                            StatusBarStyle="LightContent"/>
+    </Page.Behaviors>
+
+    <ContentPage.Resources>
+
+    </ContentPage.Resources>
+
+    <!-- Nested Grid to have background Image-->
+    <Grid>
+        <BoxView 
+            WidthRequest="1000" 
+            HeightRequest="1000">
+            <BoxView.Background>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Color="White"
+                          Offset="0.6" />
+                    <GradientStop Color="#de5653"
+                          Offset="1" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+        <Grid
+            RowDefinitions="30, 75, Auto, Auto, *"
+            ColumnDefinitions=".75*, .25*"
+            Padding="10"
+            RowSpacing="1"
+            ColumnSpacing="10">
+            <Image
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                x:Name="logo"
+                Source="todo_logo.png"/>
+            <SearchBar
+                x:Name="searchBar"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Margin="0,0,30,0"
+                Placeholder="Search To-Do list"
+                TextChanged="searchBar_TextChanged"
+                Text="{Binding SearchParams}"/>
+            <Label
+                Text="My List"
+                FontSize="Header"
+                FontAttributes="Bold"
+                TextColor="Black"
+                Grid.Row="3"
+                Padding="10,20,0,0"/>
+            <CollectionView
+            Grid.Row="4" 
+            Grid.ColumnSpan="2"
+            x:Name="Collection"
+            ItemsSource="{Binding TaskListCollection}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate
+                    x:DataType="entities:TaskList">
+                        <StackLayout>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItem
+                                        Text="Delete"
+                                        IsDestructive="true"
+                                        BackgroundColor="OrangeRed"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskListViewModel}}, Path=DeleteTaskListCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                    <SwipeItem
+                                       Text="Edit"
+                                       IsDestructive="true"
+                                       BackgroundColor="LightCyan"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskListViewModel}}, Path=ShowPopupEditViewCommand}"
+                                       CommandParameter="{Binding .}"/>
+                                </SwipeView.RightItems>
+                                <Frame
+                                    BorderColor="DarkGray"
+                                    Margin="5">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskListViewModel}}, Path=GoToAddTaskViewCommand}"
+                                            CommandParameter="{Binding id}"/>
+                                    </Frame.GestureRecognizers>
+                                    <StackLayout
+                                        Orientation="Horizontal">
+                                        <Label
+                                            Text="{Binding displayName}"
+                                            HorizontalOptions="StartAndExpand"
+                                            ></Label>
+                                        <Image
+                                            Source="simple_arrow_black.png"
+                                            WidthRequest="15"
+                                            HeightRequest="15"
+                                            HorizontalOptions="End"/>
+
+                                    </StackLayout>
+                                </Frame>
+                            </SwipeView>
+
+                        </StackLayout>
+
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        <!-- Button with plus icon -->
+            <Button 
+                Grid.Row="4" 
+                Grid.ColumnSpan="2"
+                WidthRequest="70" 
+                HeightRequest="70" 
+                CornerRadius="100"
+                HorizontalOptions="Center" 
+                VerticalOptions="End" 
+                BackgroundColor="#de5653" 
+                Text="+" 
+                TextColor="White"
+                FontSize="30"
+                FontAttributes="Bold"
+                Margin="0,0,0,50"
+                ZIndex="1"
+                Command="{Binding GoToAddTaskListViewCommand}">
+                <Button.Shadow>
+                    <Shadow Brush="Black"
+                Offset="20,20"
+                Radius="40"
+                Opacity="0.3" />
+                </Button.Shadow>
+            </Button>
+            <Button 
+                Grid.Row="4" 
+                Grid.Column="2"
+                WidthRequest="100" 
+                HeightRequest="30" 
+                CornerRadius="0"
+                HorizontalOptions="End" 
+                VerticalOptions="End" 
+                BackgroundColor="White"
+                BorderColor="#de5653"
+                BorderWidth="3"
+                Text="Generate Report" 
+                TextColor="black"
+                FontSize="9"
+                FontAttributes="None"
+                Margin="0,0,0,10"
+                Padding="5"
+                ZIndex="1"
+                Command="{Binding GoToReportCommand}">
+                <Button.Shadow>
+                    <Shadow Brush="Black"
+                Offset="15,15"
+                Radius="20"
+                Opacity="0.3" />
+                </Button.Shadow>
+            </Button>
+        </Grid>
+    </Grid>
+
+</ContentPage>

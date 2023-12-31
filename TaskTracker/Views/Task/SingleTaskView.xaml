@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolKit.Maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:TaskTracker.ViewModels"
+             x:DataType="vm:TaskViewModel"
+             xmlns:entities="clr-namespace:BusinessEntities;assembly=BusinessEntities"
+             x:Class="TaskTracker.Views.SingleTaskView"
+             Title="{Binding PageTitle}"
+             NavigationPage.HasBackButton="True">
+
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#de5653"
+                            StatusBarStyle="LightContent"/>
+    </Page.Behaviors>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior
+            IsVisible="False"
+            IsEnabled="False"/>
+    </Shell.BackButtonBehavior>
+
+    <Grid>
+        <BoxView 
+        WidthRequest="1000" 
+        HeightRequest="1000">
+            <BoxView.Background>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Color="White"
+                        Offset="0.6" />
+                    <GradientStop Color="#de5653"
+                        Offset="1" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+        <Grid
+            RowDefinitions="30, 75, Auto, *"
+            ColumnDefinitions=".75*, .25*"
+            Padding="10"
+            RowSpacing="1"
+            ColumnSpacing="10">
+            <ImageButton
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Margin="0,0,350,0"
+                Source="back_arrow.png"
+                Command="{Binding GoToTaskListsPageCommand}"/>
+            <Image
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                x:Name="logo"
+                Source="todo_logo.png"/>
+            <SearchBar
+                x:Name="searchBar"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Margin="0,0,30,0"
+                Placeholder="Search Task"
+                TextChanged="searchBar_TextChanged"
+                Text="{Binding SearchParams}"/>
+                <Label
+                    Grid.Row="3"
+                    Text="My Task"
+                    FontSize="Header"
+                    FontAttributes="Bold"
+                    TextColor="Black"
+                    Padding="10,20,0,0"
+                />
+            <CollectionView
+                 Grid.Row="4" 
+                 Grid.ColumnSpan="2"
+                 x:Name="Collection"
+                 ItemsSource="{Binding TaskCollection}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate
+                        x:DataType="entities:Task">
+                        <StackLayout>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItem
+                                         Text="Delete"
+                                         IsDestructive="true"
+                                         BackgroundColor="OrangeRed"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskViewModel}}, Path=DeleteTaskCommand}"
+                                         CommandParameter="{Binding .}"/>
+                                    <SwipeItem
+                                        Text="Edit"
+                                        IsDestructive="true"
+                                        BackgroundColor="LightCyan"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskViewModel}}, Path=GoToUpdateTaskPageCommand}"
+                                        CommandParameter="{Binding id}"/>
+                                </SwipeView.RightItems>
+                                <SwipeView.LeftItems>
+                                    <SwipeItem
+                                         Text="Completed"
+                                         IsDestructive="true"
+                                         BackgroundColor="DarkSeaGreen"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:TaskViewModel}}, Path=MarkTaskCompletedCommand}"
+                                         CommandParameter="{Binding .}"/>
+                                </SwipeView.LeftItems>
+                                <Frame
+                                     BorderColor="DarkGray"
+                                     Margin="5"
+                                     HorizontalOptions="Fill">
+                                    <StackLayout
+                                        Orientation="Horizontal"
+                                        x:Name="OutterHorizontalStack"
+                                        HorizontalOptions="Fill"
+                                        Spacing="60">
+                                        <StackLayout
+                                             Orientation="Vertical">
+                                            <Label
+                                                Text="{Binding displayName}"
+                                                HorizontalOptions="FillAndExpand"
+                                                FontSize="Body">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding isCompleted}" Value="True">
+                                                        <Setter Property="TextColor" Value="LightSlateGray" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding isCompleted}" Value="False">
+                                                        <Setter Property="TextColor" Value="Black" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label
+                                                Text="{Binding dueDate, StringFormat='{0:MM/dd/yyyy}'}"
+                                                HorizontalOptions="StartAndExpand"
+                                                Padding="0,0,0,10"
+                                                FontSize="Small"
+                                                 >
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding isCompleted}" Value="True">
+                                                        <Setter Property="TextColor" Value="LightSlateGray" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding isCompleted}" Value="False">
+                                                        <Setter Property="TextColor" Value="Black" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <BoxView
+                                                Color="DarkGray"
+                                                HeightRequest="1"
+                                                HorizontalOptions="FillAndExpand"
+                                                Margin="5,5,5,5"/>
+                                            <Label
+                                                 Text="{Binding description}"
+                                                 HorizontalOptions="StartAndExpand"
+                                                 FontSize="Small"
+                                                 >
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding isCompleted}" Value="True">
+                                                        <Setter Property="TextColor" Value="LightSlateGray" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding isCompleted}" Value="False">
+                                                        <Setter Property="TextColor" Value="Black" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </StackLayout>
+                                        <Image
+                                            Source="completed_stamp"
+                                            WidthRequest="90"
+                                            HeightRequest="40"
+                                            VerticalOptions="Start">
+                                            <Image.Triggers>
+                                                <DataTrigger TargetType="Image" Binding="{Binding isCompleted}" Value="True">
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Image" Binding="{Binding isCompleted}" Value="False">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                            </Image.Triggers>
+                                        </Image>
+                                    </StackLayout>
+                                </Frame>
+                            </SwipeView>
+
+                        </StackLayout>
+
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Button with plus icon -->
+            <Button 
+                Grid.Row="4" 
+                Grid.ColumnSpan="2"
+                WidthRequest="70" 
+                HeightRequest="70" 
+                CornerRadius="100"
+                HorizontalOptions="Center" 
+                VerticalOptions="End" 
+                BackgroundColor="#de5653" 
+                Text="+" 
+                TextColor="White"
+                FontSize="30"
+                FontAttributes="Bold"
+                Margin="0,0,0,50"
+                ZIndex="1"
+                Command="{Binding GoToAddTaskPageCommand}">
+                <Button.Shadow>
+                    <Shadow Brush="Black"
+                        Offset="20,20"
+                        Radius="40"
+                        Opacity="0.3" />
+                </Button.Shadow>
+            </Button>
+        </Grid>
+    </Grid>
+</ContentPage>

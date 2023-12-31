@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolKit.Maui"
+             xmlns:vm="clr-namespace:TaskTracker.ViewModels"
+             x:DataType="vm:AddTaskListViewModel"
+             x:Class="TaskTracker.Views.AddTaskListView"
+             Title="Add To-Do List"
+             NavigationPage.HasBackButton="False">
+
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#de5653"
+                            StatusBarStyle="LightContent"/>
+    </Page.Behaviors>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior
+            IsVisible="False"
+            IsEnabled="False"/>
+    </Shell.BackButtonBehavior>
+
+    <!-- Nested Grid to have background Image-->
+    <Grid>
+        <BoxView 
+            WidthRequest="1000" 
+            HeightRequest="1000">
+            <BoxView.Background>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Color="White"
+                          Offset="0.6" />
+                    <GradientStop Color="#de5653"
+                          Offset="1" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+        <Grid
+        RowDefinitions="30, 100, Auto, *"
+        ColumnDefinitions=".75*, .25*"
+        Padding="10"
+        RowSpacing="1"
+        ColumnSpacing="10">
+
+            <Image
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            x:Name="logo"
+            Source="todo_logo.png"
+            HorizontalOptions="Center"
+            VerticalOptions="Start"
+            />
+
+            <Frame 
+                Grid.Row="2"
+                Grid.ColumnSpan="2">
+                <StackLayout>
+                    <Entry 
+                        Placeholder="Task List Name" Text="{Binding ListName}" />
+                    <Label 
+                        Text="List Name" 
+                        Padding="5"/>
+                </StackLayout>
+            </Frame>
+
+            <StackLayout
+                Orientation="Horizontal"
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
+                VerticalOptions="Start"
+                HorizontalOptions="Center"
+                Spacing="20"
+                Padding="0,10">
+                <Button
+                    Text="Cancel"
+                    CornerRadius="50"
+                    BackgroundColor="#de5653"
+                    WidthRequest="100"
+                    Command="{Binding CancelAddTaskListCommand}">
+                    <Button.Shadow>
+                        <Shadow Brush="Black"
+                            Offset="0,0"
+                            Radius="60"
+                            Opacity="0.4" />
+                    </Button.Shadow>
+                </Button>
+                <Button
+                    Text="Create"
+                    CornerRadius="50"
+                    BackgroundColor="#de5653"
+                    WidthRequest="100"
+                    Command="{Binding AddTaskListCommand}">
+                    <Button.Shadow>
+                        <Shadow Brush="Black"
+                            Offset="0,0"
+                            Radius="60"
+                            Opacity="0.4" />
+                    </Button.Shadow>
+                </Button>
+            </StackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>

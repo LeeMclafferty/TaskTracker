@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolKit.Maui"
+			 xmlns:vm="clr-namespace:TaskTracker.ViewModels"
+			 x:DataType="vm:AddTaskViewModel"
+             x:Class="TaskTracker.Views.AddTaskView"
+             Title="Add Task">
+    
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#de5653"
+                            StatusBarStyle="LightContent"/>
+    </Page.Behaviors>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior
+            IsVisible="False"
+            IsEnabled="False"/>
+    </Shell.BackButtonBehavior>
+
+    <Grid>
+        <BoxView 
+            WidthRequest="1000" 
+            HeightRequest="1000">
+            <BoxView.Background>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Color="White"
+                          Offset="0.6" />
+                    <GradientStop Color="#de5653"
+                          Offset="1" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+        <Grid
+            RowDefinitions="30, 100, Auto, *"
+            ColumnDefinitions=".75*, .25*"
+            Padding="10"
+            RowSpacing="1"
+            ColumnSpacing="10">
+
+            <ImageButton
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Margin="0,0,350,0"
+                Source="back_arrow.png"
+                Command="{Binding CancelAddTaskCommand}"/>
+
+            <Image
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                x:Name="logo"
+                Source="todo_logo.png"
+                HorizontalOptions="Center"
+                VerticalOptions="Start"/>
+
+            <Frame 
+                Grid.Row="2"
+                Grid.ColumnSpan="2">
+				<StackLayout
+					Spacing="20">
+                    <StackLayout
+					    Spacing="0">
+                        <Entry
+							Text="{Binding TaskName}"
+                            Placeholder="Enter Name" />
+                        <Label 
+                            Text="Task Name" 
+                            Padding="5,1,1,1"/>
+                    </StackLayout>
+                    <StackLayout
+					    Spacing="0">
+                    <DatePicker 
+						Date="{Binding DueDate}"
+                        FontSize="Body"
+                        HeightRequest="40"/>
+                        <Label 
+                            Text="Due Date" 
+                            Padding="5,1,1,1"/>
+                    </StackLayout>
+			    </StackLayout>
+            </Frame>
+			
+            <StackLayout
+                Orientation="Vertical"
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
+                HorizontalOptions="Fill"
+                Spacing="20"
+                Padding="0,10">
+			    <Frame
+					HeightRequest="150">
+                        <StackLayout
+							>
+                            <Editor 
+								Text="{Binding TaskDescription}"
+                                Placeholder="Enter Task Description (Optional)"
+							    />
+                                <Label 
+                                    Text="Description" 
+                                    Padding="5,1,1,1"
+						            VerticalOptions="End"/>
+                        </StackLayout>
+			    </Frame>
+			
+                <Button
+                    Text="Create"
+                    CornerRadius="50"
+                    BackgroundColor="#de5653"
+                    WidthRequest="150"
+                    Command="{Binding AddTaskCommand}">
+                    <Button.Shadow>
+                        <Shadow Brush="Black"
+                            Offset="0,0"
+                            Radius="60"
+                            Opacity="0.4" />
+                    </Button.Shadow>
+                </Button>
+            </StackLayout>
+        </Grid>
+    </Grid>
+	
+</ContentPage>

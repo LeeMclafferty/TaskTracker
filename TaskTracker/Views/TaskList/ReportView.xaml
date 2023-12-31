@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolKit.Maui"
+             xmlns:vm="clr-namespace:TaskTracker.ViewModels"
+             x:DataType="vm:ReportViewModel"
+             xmlns:entities="clr-namespace:BusinessEntities;assembly=BusinessEntities"
+             x:Class="TaskTracker.Views.ReportView"
+             Title="ReportView">
+
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#de5653" StatusBarStyle="LightContent"/>
+    </Page.Behaviors>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False"/>
+    </Shell.BackButtonBehavior>
+
+    <!-- Main Grid -->
+    <Grid RowDefinitions="30, Auto, *, Auto"
+          ColumnDefinitions=".75*, .25*"
+          Padding="10"
+          RowSpacing="1"
+          ColumnSpacing="10">
+
+        <!-- Back Button -->
+        <ImageButton Grid.Row="0"
+                     Grid.ColumnSpan="2"
+                     Margin="0,0,350,0"
+                     Source="back_arrow.png"
+                     Command="{Binding GoToTaskListViewCommand}"/>
+
+        <!-- Scrollable Content -->
+        <ScrollView Grid.Row="2"
+                    Grid.ColumnSpan="2">
+            <CollectionView x:Name="Collection"
+                            ItemsSource="{Binding TaskListCollection}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="entities:TaskList">
+                        <StackLayout Orientation="Vertical"
+                                     Padding="20">
+                            <Label Text="{Binding displayName}"
+                                   HorizontalOptions="StartAndExpand"
+                                   FontSize="Title"
+                                   FontAttributes="Bold"/>
+                            <Label Text="================================"/>
+
+                            <CollectionView x:Name="TaskCollection" ItemsSource="{Binding AssociatedTask}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="entities:Task">
+                                        <Frame Padding="10" Margin="5" CornerRadius="10" BorderColor="Gray" BackgroundColor="Transparent">
+                                            <StackLayout Orientation="Vertical">
+                                                <!-- Task Details -->
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text=" - Task Name:" Margin="5"/>
+                                                    <Label Text="{Binding displayName}" Margin="5"/>
+                                                </StackLayout>
+
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text=" - Due Date:" Margin="5"/>
+                                                    <Label Text="{Binding dueDate, StringFormat='{0:MM/dd/yyyy}'}" Margin="5"/>
+                                                </StackLayout>
+
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text=" - Added By:" Margin="5"/>
+                                                    <Label Text="{Binding deviceName}" Margin="5"/>
+                                                </StackLayout>
+
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text=" - Last Change:" Margin="5"/>
+                                                    <Label Text="{Binding changedDate, StringFormat='{0:MM/dd/yyyy}'}" Margin="5"/>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </Grid>
+</ContentPage>
